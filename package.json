@@ -2,6 +2,10 @@
   "name": "project-metanoia",
   "type": "module",
   "version": "0.1.0",
+  "packageManager": "pnpm@11.9.0",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",

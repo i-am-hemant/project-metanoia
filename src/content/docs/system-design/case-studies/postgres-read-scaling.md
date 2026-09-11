@@ -13,7 +13,7 @@ The path a read-heavy relational workload usually walks, and the constraint that
    with ~10MB of overhead; ends when the primary is CPU-bound rather than connection-bound.
 3. **Read replicas** — linear read scaling, ends at replica lag becoming user-visible or the
    primary's WAL shipping saturating.
-4. **Caching** — see [ADR-001](/system-design/adrs/adr-001-caching-strategy/); ends when the
+4. **Caching** — see [ADR-001](../adrs/adr-001-caching-strategy/); ends when the
    consistency requirement is tighter than a TTL can express.
 5. **Partitioning / sharding** — the first genuinely irreversible step, and the first that
    breaks cross-shard joins and transactions.

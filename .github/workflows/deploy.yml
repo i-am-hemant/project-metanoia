@@ -1,0 +1,83 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Allows a manual redeploy without an empty commit.
+  workflow_dispatch:
+
+# Least privilege: read the repo, write only the Pages deployment + OIDC token
+# that actions/deploy-pages exchanges. No contents:write anywhere.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never run two deploys at once, but let an in-flight deploy finish rather than
+# cancelling it — a cancelled deploy can leave Pages on a half-published state.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Required: media in this repo is stored via Git LFS. Without this the
+          # runner checks out pointer files and the build ships broken assets.
+          lfs: true
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        # Version comes from the `packageManager` field in package.json.
+
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck and validate content schemas
+        # Fails on any TypeScript error and on invalid domain frontmatter.
+        run: pnpm run check
+
+      - name: Configure Pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+
+      - name: Build site and Pagefind index
+        run: pnpm run build
+
+      - name: Verify build output
+        # Guards the two failure modes that produce a green build but a broken
+        # site: a missing Pagefind index, and LFS pointer files served as images.
+        run: |
+          set -euo pipefail
+          test -f dist/index.html
+          test -f dist/pagefind/pagefind-entry.json
+          if grep -rq -- 'git-lfs.github.com/spec/v1' dist/; then
+            echo "::error::Git LFS pointer files found in dist/ — checkout did not fetch LFS objects."
+            grep -rl -- 'git-lfs.github.com/spec/v1' dist/
+            exit 1
+          fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

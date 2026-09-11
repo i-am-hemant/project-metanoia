@@ -10,7 +10,13 @@ import rehypeKatex from 'rehype-katex';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://example.com',
+  // Project site (not a user site), so it is served from a subpath. `site` +
+  // `base` together drive canonical URLs, the sitemap and every generated link.
+  site: 'https://i-am-hemant.github.io',
+  base: '/project-metanoia',
+  // Emit `/page/index.html` so the subpath works without a trailing-slash
+  // redirect, which GitHub Pages' static host cannot do.
+  trailingSlash: 'always',
 
   markdown: {
     // Astro 7 defaults to the Sätteri Markdown processor, which does not run
@@ -44,7 +50,7 @@ export default defineConfig({
       description:
         'A structured technical notebook: system design, Kubernetes, DSA and AI engineering.',
       social: [
-        { icon: 'github', label: 'GitHub', href: 'https://github.com/hemant/project-metanoia' },
+        { icon: 'github', label: 'GitHub', href: 'https://github.com/i-am-hemant/project-metanoia' },
       ],
       // Starlight bundles Pagefind; `pagefind: true` renders the search UI and
       // wires the index produced by `pagefind --site dist` in the build script.
