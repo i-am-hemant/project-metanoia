@@ -15,26 +15,31 @@ hero:
       variant: minimal
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 Four domains, each with enforced frontmatter and one reference note establishing the shape.
 Structure differs per topic — a decision record, a complexity analysis and an incident
 playbook have little reason to look alike.
 
-<CardGrid stagger>
-  <Card title="System Design" icon="setting">
-    ADRs, case-study teardowns and concept notes. Frontmatter enforces `type`, `date` and
-    `tags`; ADRs additionally carry a lifecycle `status`.
-  </Card>
-  <Card title="Kubernetes" icon="cloud-download">
-    Control-plane internals, annotated manifests, symptom-first incident playbooks and cluster
-    security, split across four validated categories.
-  </Card>
-  <Card title="DSA" icon="puzzle">
-    Problems indexed by pattern rather than source, each with explicit time and space bounds
-    and parallel Python / Go / C++ implementations.
-  </Card>
-  <Card title="AI Engineering" icon="rocket">
-    Math foundations through transformers, retrieval, fine-tuning and agent loops.
-  </Card>
+<CardGrid>
+  <LinkCard
+    title="System Design"
+    href="./system-design/"
+    description="Fundamentals, then components, then real systems. Every note names its constraint before its solution."
+  />
+  <LinkCard
+    title="Kubernetes"
+    href="./kubernetes/"
+    description="Control-plane internals, annotated manifests, symptom-first incident playbooks and cluster security."
+  />
+  <LinkCard
+    title="DSA"
+    href="./dsa/"
+    description="Problems indexed by pattern rather than source, with explicit complexity bounds and Python / Go / C++ implementations."
+  />
+  <LinkCard
+    title="AI Engineering"
+    href="./ai-engineering/"
+    description="Math foundations through transformers, retrieval, fine-tuning and agent loops."
+  />
 </CardGrid>
