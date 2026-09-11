@@ -20,3 +20,7 @@ Architecture work in this notebook is filed in three shapes.
 
 Every entry under `system-design/` must declare `type`, `date` and `tags`; `status` is
 required in practice for ADRs and is validated by review, not by the schema.
+
+Existing entries: [ADR-001](./adrs/adr-001-caching-strategy/) is the reference shape for a
+decision record, and [Backpressure](./concepts/backpressure/) for a concept note. Everything
+else here is still to be written.

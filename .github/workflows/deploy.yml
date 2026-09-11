@@ -53,6 +53,9 @@ jobs:
       - name: Build site and Pagefind index
         run: pnpm run build
 
+      - name: Verify internal links resolve
+        run: pnpm run check:links
+
       - name: Verify build output
         # Guards the two failure modes that produce a green build but a broken
         # site: a missing Pagefind index, and LFS pointer files served as images.

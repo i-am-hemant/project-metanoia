@@ -15,3 +15,6 @@ Four categories, each mapping to a directory and a `category` value.
 | `Manifests` | `manifests/` | Reference YAML with rationale per field |
 | `Troubleshooting` | `troubleshooting/` | Symptom-first incident playbooks |
 | `Security` | `security/` | RBAC, admission control, secrets, supply chain |
+
+[Control-Plane Request Path](./architecture/control-plane-request-path/) is the reference
+shape for an architecture note. The other three categories are empty so far.

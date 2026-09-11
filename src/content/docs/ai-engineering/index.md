@@ -14,3 +14,6 @@ Five categories, ordered roughly by dependency.
 3. **RAG** — chunking, embeddings, hybrid retrieval, reranking, evaluation.
 4. **Fine-Tuning** — LoRA/QLoRA, dataset construction, eval harnesses.
 5. **Agents** — tool use, planning loops, failure modes and guardrails.
+
+[KV Cache Arithmetic](./transformers/kv-cache-arithmetic/) is the reference shape for a note
+in this domain. The remaining categories are empty so far.

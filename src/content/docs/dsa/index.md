@@ -14,4 +14,6 @@ what transfers. Every note under `dsa/` declares its `pattern`, `difficulty` and
 complexity bounds; `leetcodeUrl` is optional.
 
 Implementations are kept in Python, Go and C++ via the `<CodeTabs />` component so the
-same algorithm can be compared across memory models.
+same algorithm can be compared across memory models — see
+[Longest Substring Without Repeating Characters](./patterns/longest-substring-without-repeats/)
+for the reference shape.
