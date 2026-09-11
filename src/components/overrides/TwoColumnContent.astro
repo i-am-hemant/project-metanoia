@@ -1,0 +1,225 @@
+---
+/**
+ * Override of Starlight's TwoColumnContent.
+ *
+ * Two changes from the default:
+ *  1. The right sidebar's width comes from its own `--mt-toc-width` instead of
+ *     `--sl-sidebar-width`, which the default shares with the LEFT nav — so
+ *     resizing one would otherwise resize both.
+ *  2. Adds a drag handle on the panel's inner edge. Width persists in
+ *     localStorage and is applied before paint to avoid a visible jump.
+ *
+ * Only active at >=72rem, matching Starlight's own breakpoint for this layout.
+ */
+---
+
+<div class="lg:sl-flex">
+  {
+    Astro.locals.starlightRoute.toc && (
+      <aside class="right-sidebar-container print:hidden">
+        <div class="right-sidebar">
+          <div
+            class="toc-resize-handle"
+            role="separator"
+            aria-orientation="vertical"
+            aria-label="Resize table of contents"
+            tabindex="0"
+            data-toc-resize-handle
+          />
+          <slot name="right-sidebar" />
+        </div>
+      </aside>
+    )
+  }
+  <div class="main-pane"><slot /></div>
+</div>
+
+<style>
+  @layer starlight.core {
+    .main-pane {
+      isolation: isolate;
+    }
+
+    @media (min-width: 72rem) {
+      .right-sidebar-container {
+        order: 2;
+        position: relative;
+        /* Same shape as Starlight's default, but keyed to --mt-toc-width so the
+           left nav keeps its own width. */
+        width: max(
+          var(--mt-toc-width),
+          calc(var(--mt-toc-width) + (100% - var(--sl-content-width) - var(--mt-toc-width)) / 2)
+        );
+      }
+
+      .right-sidebar {
+        position: fixed;
+        top: 0;
+        border-inline-start: 1px solid var(--sl-color-hairline);
+        padding-top: var(--sl-nav-height);
+        width: 100%;
+        height: 100vh;
+        overflow-y: auto;
+        scrollbar-width: none;
+      }
+
+      .main-pane {
+        width: 100%;
+      }
+
+      :global([data-has-sidebar][data-has-toc]) .main-pane {
+        --sl-content-margin-inline: auto 0;
+
+        order: 1;
+        width: min(
+          calc(100% - var(--mt-toc-width)),
+          calc(var(--sl-content-width) + (100% - var(--sl-content-width) - var(--mt-toc-width)) / 2)
+        );
+      }
+
+      .toc-resize-handle {
+        position: absolute;
+        inset-block: 0;
+        inset-inline-start: -3px;
+        width: 7px;
+        cursor: col-resize;
+        z-index: var(--sl-z-index-toc);
+        /* Invisible until hovered — a permanent grab bar would be visual noise. */
+        background: transparent;
+        touch-action: none;
+      }
+
+      .toc-resize-handle::after {
+        content: '';
+        position: absolute;
+        inset-block: 0;
+        inset-inline-start: 3px;
+        width: 1px;
+        background: var(--sl-color-accent);
+        opacity: 0;
+        transition: opacity 120ms ease-out;
+      }
+
+      .toc-resize-handle:hover::after,
+      .toc-resize-handle:focus-visible::after,
+      :global(html[data-toc-resizing]) .toc-resize-handle::after {
+        opacity: 1;
+      }
+
+      .toc-resize-handle:focus-visible {
+        outline: none;
+      }
+    }
+
+    /* Below the two-column breakpoint the TOC is a mobile dropdown; no handle. */
+    @media (max-width: 71.999rem) {
+      .toc-resize-handle {
+        display: none;
+      }
+    }
+  }
+</style>
+
+<script is:inline data-toc-resize-init>
+  // Applied inline, before paint, so a stored width doesn't flash the default first.
+  (() => {
+    const KEY = 'mt:toc-width';
+    const MIN = 180;
+    const MAX = 560;
+    const root = document.documentElement;
+
+    const clamp = (n) => Math.min(MAX, Math.max(MIN, n));
+
+    const stored = Number.parseFloat(localStorage.getItem(KEY) ?? '');
+    if (Number.isFinite(stored)) {
+      root.style.setProperty('--mt-toc-width', `${clamp(stored)}px`);
+    }
+
+    const start = () => {
+      const handle = document.querySelector('[data-toc-resize-handle]');
+      const panel = handle?.closest('.right-sidebar-container');
+      if (!handle || !panel) return;
+
+      let pointerId = null;
+      let startX = 0;
+      let startWidth = 0;
+
+      // The panel's rendered width is NOT --mt-toc-width: Starlight's max()
+      // formula adds half the leftover space to keep content centred. So track a
+      // delta from the variable's own starting value rather than deriving an
+      // absolute width from the pointer position, which would jump on first move.
+      const currentVar = () => {
+        const inline = Number.parseFloat(root.style.getPropertyValue('--mt-toc-width'));
+        if (Number.isFinite(inline)) return inline;
+        const computed = getComputedStyle(root).getPropertyValue('--mt-toc-width');
+        const px = Number.parseFloat(computed);
+        if (!Number.isFinite(px)) return MIN;
+        // Resolve rem units against the root font size.
+        return computed.trim().endsWith('rem')
+          ? px * Number.parseFloat(getComputedStyle(root).fontSize)
+          : px;
+      };
+
+      const onMove = (event) => {
+        if (event.pointerId !== pointerId) return;
+        // Dragging the handle left widens the panel; right narrows it.
+        const next = clamp(startWidth + (startX - event.clientX));
+        root.style.setProperty('--mt-toc-width', `${next}px`);
+      };
+
+      const onUp = (event) => {
+        if (event.pointerId !== pointerId) return;
+        pointerId = null;
+        root.removeAttribute('data-toc-resizing');
+        handle.releasePointerCapture?.(event.pointerId);
+        window.removeEventListener('pointermove', onMove);
+        window.removeEventListener('pointerup', onUp);
+        const current = root.style.getPropertyValue('--mt-toc-width');
+        if (current) localStorage.setItem(KEY, Number.parseFloat(current).toString());
+      };
+
+      handle.addEventListener('pointerdown', (event) => {
+        if (event.button !== 0) return;
+        pointerId = event.pointerId;
+        startX = event.clientX;
+        startWidth = currentVar();
+        root.setAttribute('data-toc-resizing', '');
+        handle.setPointerCapture?.(event.pointerId);
+        window.addEventListener('pointermove', onMove);
+        window.addEventListener('pointerup', onUp);
+        event.preventDefault();
+      });
+
+      // Double-click resets to the configured default.
+      handle.addEventListener('dblclick', () => {
+        root.style.removeProperty('--mt-toc-width');
+        localStorage.removeItem(KEY);
+      });
+
+      // Keyboard access: the handle is focusable, so arrows should work.
+      handle.addEventListener('keydown', (event) => {
+        const step = event.shiftKey ? 32 : 8;
+        let delta = 0;
+        if (event.key === 'ArrowLeft') delta = step;
+        else if (event.key === 'ArrowRight') delta = -step;
+        else if (event.key === 'Home') {
+          root.style.removeProperty('--mt-toc-width');
+          localStorage.removeItem(KEY);
+          event.preventDefault();
+          return;
+        } else return;
+
+        const next = clamp(currentVar() + delta);
+        root.style.setProperty('--mt-toc-width', `${next}px`);
+        localStorage.setItem(KEY, next.toString());
+        event.preventDefault();
+      });
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', start, { once: true });
+    } else {
+      start();
+    }
+  })();
+</script>

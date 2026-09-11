@@ -56,6 +56,11 @@ export default defineConfig({
       // wires the index produced by `pagefind --site dist` in the build script.
       pagefind: true,
       customCss: ['./src/styles/global.css'],
+      components: {
+        // Adds a drag handle to the right-hand TOC panel and gives it a width
+        // variable independent of the left nav.
+        TwoColumnContent: './src/components/overrides/TwoColumnContent.astro',
+      },
       expressiveCode: {
         themes: ['github-dark-default', 'github-light'],
       },

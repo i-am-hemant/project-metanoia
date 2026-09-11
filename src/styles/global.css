@@ -125,6 +125,13 @@
 }
 
 @layer base {
+  :root {
+    /* Width of the right-hand "On this page" panel. Starlight normally derives
+       this from --sl-sidebar-width, which is shared with the left nav; the
+       TwoColumnContent override keys off this instead so the two resize
+       independently. Live-updated by the drag handle. */
+    --mt-toc-width: 15rem;
+  }
   * {
     @apply border-border outline-ring/50;
     }
