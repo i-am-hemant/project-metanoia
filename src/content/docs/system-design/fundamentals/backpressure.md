@@ -4,6 +4,8 @@ description: A queue without backpressure is a latency amplifier with extra step
 type: concept
 date: 2026-09-11
 tags: ["backpressure", "queueing", "load-shedding", "reliability"]
+sidebar:
+  order: 6
 ---
 
 By Little's Law, mean latency for arrival rate $\lambda$ and queue length $L$ is

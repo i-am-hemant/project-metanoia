@@ -20,6 +20,20 @@ Notes on designing systems, built to be read in order rather than dipped into.
 3. **Real-World Systems** — full designs where the constraints conflict and something has to
    give.
 
+## Fundamentals, in reading order
+
+1. [Why Learn System Design](./fundamentals/why-learn-system-design/) — deciding what to build,
+   and predicting what breaks under load.
+2. [How Architects Think Differently](./fundamentals/architect-mindset/) — the six mental shifts.
+3. [Functional and Non-Functional Requirements](./fundamentals/requirements/) — what the system
+   does versus how well, and why the second shapes architecture more.
+4. [Back-of-Envelope Estimation](./fundamentals/estimation/) — order-of-magnitude maths for
+   storage, bandwidth, QPS and servers.
+5. [The Four-Step Design Framework](./fundamentals/four-step-framework/) — a repeatable order for
+   any design problem.
+6. [Backpressure](./fundamentals/backpressure/) — what a queue does to latency when nobody
+   applies it.
+
 ## The one idea underneath all of it
 
 There is rarely a perfect solution. There are trade-offs, and the skill is choosing the right
