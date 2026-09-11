@@ -62,44 +62,100 @@ export default defineConfig({
       sidebar: [
         {
           label: 'System Design',
-          collapsed: false,
+          collapsed: true,
           items: [
             { label: 'Overview', slug: 'system-design' },
-            { label: 'Fundamentals', items: [{ autogenerate: { directory: 'system-design/fundamentals' } }] },
-            { label: 'Components', items: [{ autogenerate: { directory: 'system-design/components' } }] },
-            { label: 'Real-World Systems', items: [{ autogenerate: { directory: 'system-design/case-studies' } }] },
-            { label: 'ADRs', items: [{ autogenerate: { directory: 'system-design/adrs' } }] },
+            {
+              label: 'Fundamentals',
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'system-design/fundamentals' } }],
+            },
+            {
+              label: 'Components',
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'system-design/components' } }],
+            },
+            {
+              label: 'Real-World Systems',
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'system-design/case-studies' } }],
+            },
+            {
+              label: 'ADRs',
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'system-design/adrs' } }],
+            },
           ],
         },
         {
           label: 'Kubernetes',
-          collapsed: false,
+          collapsed: true,
           items: [
             { label: 'Overview', slug: 'kubernetes' },
-            { label: 'Architecture', items: [{ autogenerate: { directory: 'kubernetes/architecture' } }] },
-            { label: 'Manifests', items: [{ autogenerate: { directory: 'kubernetes/manifests' } }] },
-            { label: 'Troubleshooting', items: [{ autogenerate: { directory: 'kubernetes/troubleshooting' } }] },
-            { label: 'Security', items: [{ autogenerate: { directory: 'kubernetes/security' } }] },
+            {
+              label: 'Architecture',
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'kubernetes/architecture' } }],
+            },
+            {
+              label: 'Manifests',
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'kubernetes/manifests' } }],
+            },
+            {
+              label: 'Troubleshooting',
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'kubernetes/troubleshooting' } }],
+            },
+            {
+              label: 'Security',
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'kubernetes/security' } }],
+            },
           ],
         },
         {
           label: 'DSA',
-          collapsed: false,
+          collapsed: true,
           items: [
             { label: 'Overview', slug: 'dsa' },
-            { label: 'Patterns', items: [{ autogenerate: { directory: 'dsa/patterns' } }] },
+            {
+              label: 'Patterns',
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'dsa/patterns' } }],
+            },
           ],
         },
         {
           label: 'AI Engineering',
-          collapsed: false,
+          collapsed: true,
           items: [
             { label: 'Overview', slug: 'ai-engineering' },
-            { label: 'Math', items: [{ autogenerate: { directory: 'ai-engineering/math' } }] },
-            { label: 'Transformers', items: [{ autogenerate: { directory: 'ai-engineering/transformers' } }] },
-            { label: 'RAG', items: [{ autogenerate: { directory: 'ai-engineering/rag' } }] },
-            { label: 'Fine-Tuning', items: [{ autogenerate: { directory: 'ai-engineering/fine-tuning' } }] },
-            { label: 'Agents', items: [{ autogenerate: { directory: 'ai-engineering/agents' } }] },
+            {
+              label: 'Math',
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'ai-engineering/math' } }],
+            },
+            {
+              label: 'Transformers',
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'ai-engineering/transformers' } }],
+            },
+            {
+              label: 'RAG',
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'ai-engineering/rag' } }],
+            },
+            {
+              label: 'Fine-Tuning',
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'ai-engineering/fine-tuning' } }],
+            },
+            {
+              label: 'Agents',
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'ai-engineering/agents' } }],
+            },
           ],
         },
       ],
