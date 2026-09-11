@@ -135,3 +135,36 @@
     @apply font-sans;
     }
 }
+
+/* Tailwind Preflight sets `ol, ul, menu { list-style: none }` in @layer base,
+   which strips bullets and numbers from prose too. Starlight's own markdown
+   styles sit in an earlier layer and lose, so restore markers explicitly —
+   scoped to rendered markdown so component/nav lists stay unstyled. */
+.sl-markdown-content :where(ul):not(:where(.not-content *)) {
+  list-style: disc outside;
+  padding-inline-start: 1.5rem;
+}
+
+.sl-markdown-content :where(ol):not(:where(.not-content *)) {
+  list-style: decimal outside;
+  padding-inline-start: 1.5rem;
+}
+
+.sl-markdown-content :where(ul ul):not(:where(.not-content *)) {
+  list-style-type: circle;
+}
+
+.sl-markdown-content :where(ul ul ul):not(:where(.not-content *)) {
+  list-style-type: square;
+}
+
+.sl-markdown-content :where(li):not(:where(.not-content *)) {
+  margin-block: 0.25rem;
+}
+
+/* Starlight renders GFM task lists as <ul> with checkboxes; markers would
+   double up with the checkbox itself. */
+.sl-markdown-content :where(ul):has(> li > input[type='checkbox']) {
+  list-style: none;
+  padding-inline-start: 0;
+}
