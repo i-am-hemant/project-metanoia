@@ -1,0 +1,36 @@
+---
+title: Project Metanoia
+description: A structured technical notebook — system design, Kubernetes, DSA and AI engineering.
+template: splash
+hero:
+  tagline: Notes built to be re-derived, not re-read. Every entry carries enforced metadata.
+  actions:
+    - text: Read ADR-001
+      link: /system-design/adrs/adr-001-caching-strategy/
+      icon: right-arrow
+      variant: primary
+    - text: Browse Kubernetes
+      link: /kubernetes/
+      icon: right-arrow
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid stagger>
+  <Card title="System Design" icon="setting">
+    ADRs, case-study teardowns and concept notes. Frontmatter enforces `type`, `date` and
+    `tags`; ADRs additionally carry a lifecycle `status`.
+  </Card>
+  <Card title="Kubernetes" icon="cloud-download">
+    Control-plane internals, annotated manifests, symptom-first incident playbooks and cluster
+    security, split across four validated categories.
+  </Card>
+  <Card title="DSA" icon="puzzle">
+    Problems indexed by pattern rather than source, each with explicit time and space bounds
+    and parallel Python / Go / C++ implementations.
+  </Card>
+  <Card title="AI Engineering" icon="rocket">
+    Math foundations through transformers, retrieval, fine-tuning and agent loops.
+  </Card>
+</CardGrid>
