@@ -65,9 +65,10 @@ export default defineConfig({
           collapsed: false,
           items: [
             { label: 'Overview', slug: 'system-design' },
+            { label: 'Fundamentals', items: [{ autogenerate: { directory: 'system-design/fundamentals' } }] },
+            { label: 'Components', items: [{ autogenerate: { directory: 'system-design/components' } }] },
+            { label: 'Real-World Systems', items: [{ autogenerate: { directory: 'system-design/case-studies' } }] },
             { label: 'ADRs', items: [{ autogenerate: { directory: 'system-design/adrs' } }] },
-            { label: 'Case Studies', items: [{ autogenerate: { directory: 'system-design/case-studies' } }] },
-            { label: 'Concepts', items: [{ autogenerate: { directory: 'system-design/concepts' } }] },
           ],
         },
         {

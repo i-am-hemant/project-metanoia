@@ -1,26 +1,39 @@
 ---
 title: System Design
-description: Architecture decision records, case studies and first-principles concept notes.
+description: Fundamentals, components and real-world systems — read in that order.
 type: concept
-status: Accepted
 date: 2026-09-11
 tags: ["system-design", "index"]
 sidebar:
   order: 0
 ---
 
-Architecture work in this notebook is filed in three shapes.
+Notes on designing systems, built to be read in order rather than dipped into.
 
-- **ADRs** — a decision, its context, the options rejected and why. Immutable once
-  `Accepted`; superseded rather than edited.
-- **Case studies** — a teardown of a real system, ending in the constraints that
-  actually drove its design.
-- **Concepts** — mechanism notes (quorum, backpressure, consistent hashing) that ADRs
-  and case studies link to instead of re-explaining.
+## The flow
 
-Every entry under `system-design/` must declare `type`, `date` and `tags`; `status` is
-required in practice for ADRs and is validated by review, not by the schema.
+1. **[Fundamentals](./fundamentals/why-learn-system-design/)** — the properties that matter
+   (scalable, reliable, available, consistent) and what each one costs. This is the vocabulary
+   everything else is written in.
+2. **Components** — databases, caches, load balancers, message queues. For each one: what it's
+   good at, and what it's bad at.
+3. **Real-World Systems** — full designs where the constraints conflict and something has to
+   give.
 
-Existing entries: [ADR-001](./adrs/adr-001-caching-strategy/) is the reference shape for a
-decision record, and [Backpressure](./concepts/backpressure/) for a concept note. Everything
-else here is still to be written.
+## The one idea underneath all of it
+
+There is rarely a perfect solution. There are trade-offs, and the skill is choosing the right
+ones for your constraints. A cache is not "better" than no cache — it buys read speed and pays
+in staleness. Whether that's a good deal depends entirely on the problem.
+
+So every note here tries to state the constraint before the solution, and name what the
+solution gives up.
+
+## Also in this section
+
+**ADRs** — architecture decision records. Where the rest of this section is general, these are
+specific decisions with context, options considered and consequences.
+[ADR-001](./adrs/adr-001-caching-strategy/) is the reference shape.
+
+Frontmatter under `system-design/` requires `type`, `date` and `tags`; ADRs additionally carry
+a `status` (`Proposed`, `Accepted`, `Deprecated`).
